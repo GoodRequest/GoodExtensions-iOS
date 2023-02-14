@@ -1,4 +1,4 @@
-# iOS-GoodExtensions
+# GoodExtensions-iOS
 
 [![iOS Version](https://img.shields.io/badge/iOS_Version->=_12.0-brightgreen?logo=apple&logoColor=green)]()
 [![Swift Version](https://img.shields.io/badge/Swift_Version-5.5-green?logo=swift)](https://docs.swift.org/swift-book/)
@@ -25,7 +25,7 @@ import PackageDescription
 let package = Package(
     name: "SampleProject",
     dependencies: [
-        .Package(url: "https://github.com/GoodRequest/iOS-GoodExtensions" from: "addVersion")
+        .Package(url: "https://github.com/GoodRequest/GoodExtensions-iOS" from: "addVersion")
     ]
 )
 
@@ -44,16 +44,14 @@ let myLabel = UILabel().then {
 }
 ```
 
-### UIKit & Foundation Extensions
+### Foundation Extensions
 Use our extensions with `.gr` just like this:
 
 ```swift
-
-myCollectionView.gr.registerCell(fromClass: MyCollectionViewCell.self)
-
-myTableView.gr.registerHeaderFooterView(fromClass: MyTableViewHeader.self)
+guard myArray.gr.contains(index: 7) else { return }
 
 myarray.gr.hasItems
+
 myArray.gr.removedDuplicates()
 
 ```
