@@ -39,9 +39,12 @@ let package = Package(
             dependencies: [.target(name: "GRCompatible"), .target(name: "GoodStructs")]
         ),
         .target(
-            name: "GoodCombineExtensions",
-            dependencies: ["CombineExt", .target(name: "GRCompatible")]
-        ),
+             name: "GoodCombineExtensions",
+             dependencies: [
+                 .product(name: "CombineExt", package: "CombineExt"),
+                 .target(name: "GRCompatible")
+             ]
+         ),
         .target(
             name: "GoodStructs",
             dependencies: [],
@@ -55,10 +58,6 @@ let package = Package(
                 .copy("Resources/EmptyElement.json"),
                 .copy("Resources/ArrayNil.json")
             ]
-        ),
-        .testTarget(
-            name: "GoodCombineExtensionsTests",
-            dependencies: ["GoodCombineExtensions"]
         ),
         .testTarget(
             name: "GoodCompatibleTests",
