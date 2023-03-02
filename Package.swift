@@ -60,10 +60,6 @@ let package = Package(
             ]
         ),
         .testTarget(
-            name: "GoodCompatibleTests",
-            dependencies: ["GRCompatible"]
-        ),
-        .testTarget(
             name: "GoodStructsTests",
             dependencies: ["GoodStructs"]
         )
