@@ -6,8 +6,8 @@ final class StringTests: XCTestCase {
 
     enum C {
 
-        static let stringWithDiacritics = "Žilinský šošóni"
-        static let stringWithoutDiacritics = "Zilinsky sosoni"
+        static let stringWithDiacritics = "Žilinskí šošóni"
+        static let stringWithoutDiacritics = "Zilinski sosoni"
 
     }
 
