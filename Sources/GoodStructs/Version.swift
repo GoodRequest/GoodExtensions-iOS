@@ -277,7 +277,7 @@ public struct VersionParseStrategy: ParseStrategy {
 
 @available(iOS 16.0, *)
 @available(macOS 13.0, *)
-struct VersionFormatStyle: ParseableFormatStyle {
+public struct VersionFormatStyle: ParseableFormatStyle {
 
     public typealias Strategy = VersionParseStrategy
     public typealias FormatInput = Version
