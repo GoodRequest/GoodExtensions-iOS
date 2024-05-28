@@ -269,6 +269,8 @@ public struct VersionParseStrategy: ParseStrategy {
     public typealias ParseInput = String
     public typealias ParseOutput = Version
 
+    public init() {}
+
     public func parse(_ value: String) throws -> Version {
         try Version(string: value)
     }
@@ -282,6 +284,8 @@ public struct VersionFormatStyle: ParseableFormatStyle {
     public typealias Strategy = VersionParseStrategy
     public typealias FormatInput = Version
     public typealias FormatOutput = String
+
+    public init() {}
 
     public var parseStrategy: Strategy {
         Strategy()
