@@ -7,6 +7,7 @@
 
 import Foundation
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public struct GRActive<Base> {
 
     /// Base object to extend.
@@ -22,6 +23,7 @@ public struct GRActive<Base> {
 }
 
 /// A type that has reactive extensions.
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public protocol GRCompatible {
 
     /// Extended type
@@ -35,6 +37,7 @@ public protocol GRCompatible {
     
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRCompatible {
 
     /// Reactive extensions.
@@ -62,4 +65,5 @@ public extension GRCompatible {
 }
 
 /// Extend NSObject with `gr` proxy.
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension NSObject: GRCompatible { }

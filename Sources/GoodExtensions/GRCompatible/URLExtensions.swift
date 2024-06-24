@@ -7,8 +7,8 @@
 //
 
 import Foundation
-import GRCompatible
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base == URL {
 
     /// Creates a string out of the URL formatted with scheme and host: `"\(scheme)://\(host)"`

@@ -6,11 +6,12 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
-import GRCompatible
 import UIKit
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension CGAffineTransform: GRCompatible {}
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base == CGAffineTransform {
 
     /// Create a transform with scale, translation and anchor in place with the create function

@@ -12,6 +12,7 @@ import Foundation
 ///   Cannot apply on top of optional arrays
 ///   Cannot  on top of constants
 ///   Errors in decoding are printed into the console in a structured way
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 @propertyWrapper
 public struct LossyCodableArray<Element>: Equatable where Element: Equatable {
 
@@ -31,6 +32,7 @@ public struct LossyCodableArray<Element>: Equatable where Element: Equatable {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension LossyCodableArray: Decodable where Element: Decodable & Equatable {
 
 
@@ -82,6 +84,7 @@ extension LossyCodableArray: Decodable where Element: Decodable & Equatable {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension LossyCodableArray: Encodable where Element: Encodable {
 
     /// Encodes the elements of an unkeyed container to an encoder.

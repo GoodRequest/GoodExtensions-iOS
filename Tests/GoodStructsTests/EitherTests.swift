@@ -13,4 +13,5 @@ final class EitherTests: XCTestCase {
     static var allTests = [
         ("testEither", testEither)
     ]
+
 }

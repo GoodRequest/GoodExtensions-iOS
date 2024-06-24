@@ -7,9 +7,9 @@
 //
 
 import UIKit
-import GRCompatible
 
 @available(iOS 13.0, *)
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base: NSCollectionLayoutGroup {
 
     /// Creates a horizontal NSCollectionLayoutGroup with specified width and height dimensions.

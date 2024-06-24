@@ -7,10 +7,11 @@
 //
 
 import Foundation
-import GRCompatible
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension Date: GRCompatible {}
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base == Date {
 
     /// Adding return a new date with the added component
@@ -32,15 +33,6 @@ public extension GRActive where Base == Date {
         let ageComponents = calendar.dateComponents([.year], from: base, to: Date())
 
         return ageComponents.year ?? 0
-    }
-
-    /// Returns the current date as a string in the specified `format`.
-    ///
-    /// - Parameter format: The date format string.
-    /// - Returns: The current date as a string in the specified `format`.
-    @available(iOS, deprecated: 15.0, message: "Deprecated, since iOS 15.0 you should use '.formatted()' instead.")
-    func stringFromDate(format: String) -> String {
-        return GRDateFormatter.shared.string(from: base, format: format)
     }
 
     /// Determines whether the given date is in the past.

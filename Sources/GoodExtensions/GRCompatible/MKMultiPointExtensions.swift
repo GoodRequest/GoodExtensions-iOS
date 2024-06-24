@@ -7,8 +7,8 @@
 //
 
 import MapKit
-import GRCompatible
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base == MKMultiPoint {
 
     /// An array of MKMapPoint that represent the individual points in the multi-point shape.

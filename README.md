@@ -44,17 +44,6 @@ let myLabel = UILabel().then {
 }
 ```
 
-### Foundation Extensions
-Use our extensions with `.gr` just like this:
-
-```swift
-guard myArray.gr.contains(index: 7) else { return }
-
-myarray.gr.hasItems
-
-myArray.gr.removedDuplicates()
-
-```
 ### UIKit Combine
 You can define Publisher for your button or other user interactive elements
 

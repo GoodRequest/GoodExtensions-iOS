@@ -6,9 +6,9 @@
 //
 
 import Foundation
-import GRCompatible
 
 /// Name describable allow your to take typename from any type extending the protocol
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public protocol NameDescribable {
 
     /// Typename of NSObject. Useful for example when diffing
@@ -19,6 +19,7 @@ public protocol NameDescribable {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension NameDescribable {
 
     /// Typename of NSObject. Useful for example when diffing
@@ -29,6 +30,7 @@ public extension NameDescribable {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base: NSObject {
 
     /// Typename of NSObject. Useful for example when diffing
@@ -39,6 +41,7 @@ public extension GRActive where Base: NSObject {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base: Collection {
 
     /// Typename of NSObject. Useful for example when diffing
