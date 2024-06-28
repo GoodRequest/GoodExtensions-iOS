@@ -34,7 +34,7 @@ public typealias ThrowingSendableSupplier<T> = (@Sendable () async throws -> (T)
 /// ```
 /// - Parameters:
 ///     - functions: Array of async functions to run in parallel
-public func runAsync<T>(_ functions: ThrowingSendableSupplier<T>...) async throws {
+public func runAsync<T: Sendable>(_ functions: ThrowingSendableSupplier<T>...) async throws {
     try await withThrowingTaskGroup(of: T.self, body: { group in
         for function in functions {
             group.addTask(operation: function)
@@ -42,34 +42,6 @@ public func runAsync<T>(_ functions: ThrowingSendableSupplier<T>...) async throw
 
         try await group.waitForAll()
     })
-}
-
-/// Use when expected error type is different from actual error type.
-/// ```
-/// enum AppError: Error {
-///
-///     case serverError
-///
-/// }
-///
-/// func sendRequest() async throws -> Int {
-///     throw AppError.serverError
-///     return 1
-/// }
-///
-/// Task {
-///     do {
-///         let response = try await sendRequest()
-///         print(response)
-///     } catch let error as AppError {
-///         print(error)
-///     } catch {
-///         GENERIC_CONTRACT_VIOLATION()
-///     }
-/// }
-/// ```
-public func GENERIC_CONTRACT_VIOLATION() -> Never {
-    preconditionFailure("Generic contract violated: throwable type does not match Failure type")
 }
 
 // MARK: - Publisher -> Async
@@ -155,6 +127,7 @@ public extension Publisher where Output == Alamofire.Empty {
 
 // MARK: - Async -> Publisher
 
+@available(*, deprecated, message: "This is unsafe in Swift 6, migrate to Swift Concurrency")
 public extension Future where Failure == Never {
 
     /// Transforms a **non throwing** async function into a **never failing** Future.
@@ -169,15 +142,16 @@ public extension Future where Failure == Never {
     /// ```
     /// - Parameters:
     ///     - asyncFunction: **non throwing** Async function to run
-    convenience init(_ asyncFunction: @escaping () async -> Output) {
+    convenience init(_ asyncFunction: @Sendable @escaping () async -> Output) {
         self.init { (promise: @escaping (Result<Output, Never>) -> Void) in
+            nonisolated(unsafe) let promise = promise
             Task { promise(.success(await asyncFunction())) }
         }
     }
 
 }
 
-#if swift(<6.0)
+@available(*, deprecated, message: "This is unsafe in Swift 6, migrate to Swift Concurrency")
 public extension Future {
 
     /// Transforms a **throwing** async function into a **failing** Future.
@@ -192,19 +166,17 @@ public extension Future {
     /// ```
     /// - Parameters:
     ///     - asyncFunction: **throwing** Async function to run
-    convenience init(_ asyncFunction: @escaping () async throws -> Output) {
+    convenience init(_ asyncFunction: @Sendable @escaping () async throws(Failure) -> Output) {
         self.init { (promise: @escaping (Result<Output, Failure>) -> Void) in
+            nonisolated(unsafe) let promise = promise
             Task {
                 do {
                     promise(.success(try await asyncFunction()))
                 } catch let error as Failure {
                     promise(.failure(error))
-                } catch {
-                    GENERIC_CONTRACT_VIOLATION()
                 }
             }
         }
     }
 
 }
-#endif
