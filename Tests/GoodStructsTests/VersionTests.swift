@@ -7,7 +7,6 @@
 
 import XCTest
 import GoodStructs
-import GoodMacros
 
 @available(iOS 16.0, *)
 @available(macOS 13.0, *)
@@ -380,6 +379,19 @@ final class VersionTests: XCTestCase {
         let encodedString = String(data: encodedData, encoding: .utf8)!
 
         XCTAssertEqual(encodedString, originalEncodeVersionContainerString)
+    }
+
+    // MARK: - ExpressibleByStringLiteralTests
+
+    func testVersionStringLiteral() {
+        let version: Version = "3.9.2"
+
+        XCTAssertEqual(version.major, 3)
+        XCTAssertEqual(version.minor, 9)
+        XCTAssertEqual(version.patch, 2)
+        XCTAssertEqual(version.stage, .release)
+        XCTAssertEqual(version.build, 0)
+        XCTAssertEqual(version.suffix, nil)
     }
 
 }

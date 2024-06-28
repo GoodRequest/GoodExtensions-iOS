@@ -9,7 +9,7 @@ import UIKit
 import CoreHaptics
 
 /// The `GRHapticsManager` class manages haptic feedback for a user interface.
-public final class GRHapticsManager {
+@MainActor public final class GRHapticsManager {
 
     /// An enumeration representing different levels of impact feedback.
     public enum ImpactGeneratorStyle {
