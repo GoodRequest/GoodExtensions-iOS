@@ -11,18 +11,17 @@ let package = Package(
         .iOS(.v13)
     ],
     products: [
-        // Products define the executables and libraries a package produces, and make them visible to other packages.
         .library(
             name: "GoodExtensions",
             targets: ["GoodExtensions"]
         ),
         .library(
-            name: "GoodStructs",
-            targets: ["GoodStructs"]
+            name: "GoodAsyncExtensions",
+            targets: ["GoodAsyncExtensions"]
         ),
         .library(
-            name: "GoodCombineExtensions",
-            targets: ["GoodCombineExtensions"]
+            name: "GoodStructs",
+            targets: ["GoodStructs"]
         ),
         .library(
             name: "GoodMacros",
@@ -30,26 +29,19 @@ let package = Package(
         )
     ],
     dependencies: [
-        // Dependencies declare other packages that this package depends on.
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0"),
         .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.2")
     ],
     targets: [
-        // Targets are the basic building blocks of a package. A target can define a module or a test suite.
-        // Targets can depend on other targets in this package, and on products in packages this package depends on.
-        .target(
-            name: "GRCompatible",
-            dependencies: []
-        ),
         .target(
             name: "GoodExtensions",
-            dependencies: [.target(name: "GRCompatible"), .target(name: "GoodStructs")]
+            dependencies: ["GoodStructs"],
+            path: "./Sources/GoodExtensions"
         ),
         .target(
-             name: "GoodCombineExtensions",
+             name: "GoodAsyncExtensions",
              dependencies: [
-                 .product(name: "CombineExt", package: "CombineExt"),
-                 .target(name: "GRCompatible")
+                 .product(name: "CombineExt", package: "CombineExt")
              ]
          ),
         .target(
@@ -82,6 +74,10 @@ let package = Package(
         .testTarget(
             name: "GoodStructsTests",
             dependencies: ["GoodStructs"]
+        ),
+        .testTarget(
+            name: "GoodAsyncExtensionsTests",
+            dependencies: ["GoodAsyncExtensions"]
         )
     ]
 )

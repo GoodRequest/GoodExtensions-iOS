@@ -1,6 +1,6 @@
 //
 //  AsyncExtensions.swift
-//  
+//  GoodAsyncExtensions
 //
 //  Created by Matus Klasovity on 22/09/2023.
 //
@@ -76,7 +76,7 @@ public func GENERIC_CONTRACT_VIOLATION() -> Never {
 
 public extension Publisher where Failure == Never {
 
-    /// Transforms a **never failing** publisher into an async function.
+    /// Transforms a **never failing** single-element publisher into an async function.
     /// ```
     /// let myPublisher = Just(1).eraseToAnyPublisher()
     /// Task {
@@ -99,7 +99,7 @@ public extension Publisher where Failure == Never {
 
 public extension Publisher {
 
-    /// Transforms a **failing** publisher into an **throwing** async function.
+    /// Transforms a **failing** single-element publisher into an **throwing** async function.
     /// ```
     /// let myPublisher = Just(1)
     ///     .setFailureType(to: Error.self)
@@ -157,7 +157,7 @@ public extension Publisher where Output == Alamofire.Empty {
 
 public extension Future where Failure == Never {
 
-    /// Transforms an **non throwing** async function into a **never failing** Future.
+    /// Transforms a **non throwing** async function into a **never failing** Future.
     /// ```
     /// func myAsyncFunction() async -> Int {
     ///    await Task.sleep(1_000_000_000)
@@ -177,9 +177,10 @@ public extension Future where Failure == Never {
 
 }
 
+#if swift(<6.0)
 public extension Future {
 
-    /// Transforms an **throwing** async function into a **failing** Future.
+    /// Transforms a **throwing** async function into a **failing** Future.
     /// ```
     /// func myThrowingAsyncFunction() async throws -> Int {
     ///    await Task.sleep(1_000_000_000)
@@ -206,4 +207,4 @@ public extension Future {
     }
 
 }
-
+#endif

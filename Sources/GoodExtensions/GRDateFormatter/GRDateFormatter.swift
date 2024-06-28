@@ -6,7 +6,6 @@
 //
 
 import UIKit
-import GRCompatible
 import GoodStructs
 
 public final class GRDateFormatter {

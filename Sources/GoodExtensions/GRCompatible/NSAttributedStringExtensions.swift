@@ -7,8 +7,8 @@
 //
 
 import UIKit
-import GRCompatible
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base: NSAttributedString {
 
     /// Creates an NSAttributedString from an HTML string, font, and color.
@@ -97,6 +97,7 @@ public extension GRActive where Base: NSAttributedString {
 
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base: NSMutableAttributedString {
 
     /// Add hyperlink to a specific text in an NSMutableAttributedString
@@ -166,7 +167,6 @@ public extension GRActive where Base: NSMutableAttributedString {
     ///   - range: The range in which the font will be applied
     /// - Returns: The NSMutableAttributedString with the font applied
     @discardableResult
-
     func setFont(_ font: UIFont, range: NSRange) -> NSMutableAttributedString {
         base.addAttributes([.font: font], range: range)
         return base

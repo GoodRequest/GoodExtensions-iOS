@@ -6,8 +6,8 @@
 //
 
 import CoreGraphics
-import GRCompatible
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension CGFloat {
     
     // MARK: - Alpha stages
@@ -20,8 +20,10 @@ public extension CGFloat {
     
 }
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 extension CGFloat: GRCompatible {}
 
+@available(*, deprecated, message: "This extension is deprecated and marked for removal")
 public extension GRActive where Base == CGFloat {
 
     /// CGFloat `0.0` representation
