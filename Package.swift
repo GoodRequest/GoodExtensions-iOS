@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -36,23 +36,27 @@ let package = Package(
         .target(
             name: "GoodExtensions",
             dependencies: ["GoodStructs"],
-            path: "./Sources/GoodExtensions"
+            path: "./Sources/GoodExtensions",
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .target(
              name: "GoodAsyncExtensions",
              dependencies: [
                  .product(name: "CombineExt", package: "CombineExt")
-             ]
+             ],
+             swiftSettings: [.swiftLanguageVersion(.v6)]
          ),
         .target(
             name: "GoodStructs",
             dependencies: [],
-            path: "./Sources/GoodStructs"
+            path: "./Sources/GoodStructs",
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .target(
             name: "GoodMacros",
             dependencies: ["MacroCollection"],
-            path: "./Sources/GoodMacros"
+            path: "./Sources/GoodMacros",
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .macro(
             name: "MacroCollection",
@@ -60,7 +64,8 @@ let package = Package(
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ],
-            path: "./Sources/MacroCollection"
+            path: "./Sources/MacroCollection",
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .testTarget(
             name: "GoodExtensionsTests",
@@ -69,15 +74,18 @@ let package = Package(
             [
                 .copy("Resources/EmptyElement.json"),
                 .copy("Resources/ArrayNil.json")
-            ]
+            ],
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .testTarget(
             name: "GoodStructsTests",
-            dependencies: ["GoodStructs"]
+            dependencies: ["GoodStructs"],
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         ),
         .testTarget(
             name: "GoodAsyncExtensionsTests",
-            dependencies: ["GoodAsyncExtensions"]
+            dependencies: ["GoodAsyncExtensions"],
+            swiftSettings: [.swiftLanguageVersion(.v6)]
         )
     ]
 )

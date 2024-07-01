@@ -6,6 +6,7 @@
 //  Copyright © 2020 GoodRequest. All rights reserved.
 //
 
+#if canImport(UIKit)
 import UIKit
 
 @available(*, deprecated, message: "This extension is deprecated and marked for removal")
@@ -208,3 +209,4 @@ public extension GRActive where Base: NSMutableAttributedString {
     }
 
 }
+#endif

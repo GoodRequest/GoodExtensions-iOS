@@ -7,7 +7,6 @@
 
 import XCTest
 import GoodStructs
-import GoodMacros
 
 @available(iOS 16.0, *)
 @available(macOS 13.0, *)
