@@ -178,6 +178,18 @@ public struct Version {
 
 }
 
+// MARK: - ExpressibleByStringLiteral
+
+@available(iOS 16.0, *)
+@available(macOS 13.0, *)
+extension Version: ExpressibleByStringLiteral {
+
+    public init(stringLiteral value: String) {
+        try! self.init(string: value)
+    }
+
+}
+
 // MARK: - CustonStringConvertible
 
 @available(iOS 16.0, *)
@@ -260,6 +272,12 @@ extension Version: Codable {
 
 }
 
+// MARK: - Sendable
+
+@available(iOS 16.0, *)
+@available(macOS 13.0, *)
+extension Version: Sendable {}
+
 // MARK: - Parser, Formatter
 
 @available(iOS 16.0, *)
@@ -301,7 +319,7 @@ public struct VersionFormatStyle: ParseableFormatStyle {
 
 @available(iOS 16.0, *)
 @available(macOS 13.0, *)
-public enum ReleaseStage: String {
+public enum ReleaseStage: String, Sendable {
 
     case alpha
     case beta

@@ -91,11 +91,11 @@ public enum Either<L, R> {
 
     public func toResult() -> GRResult<L, R> where R: Error {
         switch self {
-        case let .left(error):
-            return GRResult.success(error)
+        case let .left(value):
+            return GRResult.success(value)
 
-        case let .right(value):
-            return GRResult.failure(value)
+        case let .right(error):
+            return GRResult.failure(error)
         }
     }
 
@@ -126,7 +126,7 @@ public enum Either<L, R> {
 /// Result represents state of task. Loading is mostly used at beginning of task.
 /// Success type represents result value when task is finished succesfully.
 /// Failure is used for catching errors from tasks. Used for preventing of TRY CATCH usage.
-public enum GRResult<Success, Failure> where Failure: Error {
+@frozen public enum GRResult<Success, Failure> where Failure: Error {
 
     case loading
     case success(Success)
@@ -261,6 +261,23 @@ extension GRResult: Equatable where Failure: Equatable, Success: Equatable {
         }
 
         return false
+    }
+
+}
+
+extension GRResult: Sendable where Success: Sendable {}
+
+// Converting Swift.Result to GoodStructs.GRResult
+public extension Swift.Result {
+
+    func toGRResult() -> GRResult<Success, Failure> {
+        switch self {
+        case .success(let success):
+            GRResult.success(success)
+
+        case .failure(let error):
+            GRResult.failure(error)
+        }
     }
 
 }

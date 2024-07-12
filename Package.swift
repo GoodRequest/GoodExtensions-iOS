@@ -30,7 +30,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.2")
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-latest")
     ],
     targets: [
         .target(
@@ -56,7 +56,11 @@ let package = Package(
             name: "GoodMacros",
             dependencies: ["MacroCollection"],
             path: "./Sources/GoodMacros",
-            swiftSettings: [.swiftLanguageVersion(.v6)]
+            swiftSettings: [
+                .swiftLanguageVersion(.v6),
+                .enableUpcomingFeature("BodyMacros"),
+                .enableExperimentalFeature("BodyMacros")
+            ]
         ),
         .macro(
             name: "MacroCollection",
@@ -64,8 +68,7 @@ let package = Package(
                 .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
                 .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
             ],
-            path: "./Sources/MacroCollection",
-            swiftSettings: [.swiftLanguageVersion(.v6)]
+            path: "./Sources/MacroCollection"
         ),
         .testTarget(
             name: "GoodExtensionsTests",
@@ -86,6 +89,18 @@ let package = Package(
             name: "GoodAsyncExtensionsTests",
             dependencies: ["GoodAsyncExtensions"],
             swiftSettings: [.swiftLanguageVersion(.v6)]
+        ),
+        .testTarget(
+            name: "GoodMacrosTests",
+            dependencies: [
+                "GoodMacros",
+                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+            ],
+            swiftSettings: [
+                .swiftLanguageVersion(.v6),
+                .enableUpcomingFeature("BodyMacros"),
+                .enableExperimentalFeature("BodyMacros")
+            ]
         )
     ]
 )
