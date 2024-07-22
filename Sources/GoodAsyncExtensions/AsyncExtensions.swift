@@ -12,7 +12,7 @@ import Combine
 public struct ExplicitlyCancelledError: Error {
     
     let message = "Explicitly cancelled"
-    
+
 }
 
 // MARK: - Typealiases
@@ -46,69 +46,143 @@ public func runAsync<T: Sendable>(_ functions: ThrowingSendableSupplier<T>...) a
 
 // MARK: - Publisher -> Async
 
+@available(iOS 15.0, *)
 public extension Publisher where Failure == Never {
 
     /// Transforms a **never failing** single-element publisher into an async function.
-    /// ```
+    ///
+    /// In case the publisher finishes without publishing any values, this function will throw
+    /// `ExplicitlyCancelledError`.
+    /// ```swift
     /// let myPublisher = Just(1).eraseToAnyPublisher()
     /// Task {
-    ///     let response = await myPublisher.async()
+    ///     do {
+    ///         let response = try await myPublisher.async()
+    ///         print(response)
+    ///     } catch {
+    ///         // handle publisher finishing without value
+    ///     }
+    /// }
+    /// ```
+    func async() async throws(ExplicitlyCancelledError) -> Output {
+        for await value in values {
+            return value
+        }
+        throw ExplicitlyCancelledError()
+    }
+    
+    /// Transforms a **never failing** single-element publisher into an async function.
+    ///
+    /// - warning: In case the publisher finishes without publishing any values, this function will trap.
+    ///
+    /// Usage:
+    /// ```swift
+    /// let myPublisher = Just(1).eraseToAnyPublisher()
+    /// Task {
+    ///     let response = await myPublisher.asyncUnsafe()
     ///     print(response)
     /// }
     /// ```
-    func async() async -> Output {
-        var cancellable: AnyCancellable?
-        defer { cancellable = withExtendedLifetime(cancellable, { nil }) }
-
-        return await withCheckedContinuation { continuation in
-            cancellable = first().sink { value in
-                continuation.resume(returning: value)
-            }
+    func asyncUnsafe() async -> Output {
+        for await value in values {
+            return value
         }
+        preconditionFailure("Awaited publisher finished without sending any value.")
     }
 
 }
 
+@available(iOS 15.0, *)
 public extension Publisher {
 
-    /// Transforms a **failing** single-element publisher into an **throwing** async function.
-    /// ```
+    /// Transforms a **failable** single-element publisher into an **throwing** async function.
+    ///
+    /// - warning: In case the publisher finishes without publishing any values, this function will trap.
+    ///
+    /// Usage:
+    /// ```swift
     /// let myPublisher = Just(1)
     ///     .setFailureType(to: Error.self)
     ///     .eraseToAnyPublisher()
     ///
     /// Task {
-    ///     let response = try await myPublisher.async()
-    ///     print(response)
+    ///     do {
+    ///         let response = try await myPublisher.async()
+    ///         print(response)
+    ///     } catch {
+    ///         // handle any possible error
+    ///     }
     /// }
     /// ```
+    @available(*, deprecated, renamed: "asyncThrowingFailureUnsafe()", message: "Generic contract is not enforced anymore.")
     func async() async throws -> Output {
+        try await asyncThrowingAny()
+    }
+    
+    /// Transforms a **failable** single-element publisher into an **throwing** async function.
+    ///
+    /// Usage:
+    /// ```swift
+    /// let myPublisher = Just(1)
+    ///     .setFailureType(to: Error.self)
+    ///     .eraseToAnyPublisher()
+    ///
+    /// Task {
+    ///     do {
+    ///         let response = try await myPublisher.asyncThrowingAny()
+    ///         print(response)
+    ///     } catch {
+    ///         // handle any possible error
+    ///     }
+    /// }
+    /// ```
+    func asyncThrowingAny() async throws -> Output {
         var cancellable: AnyCancellable?
         defer { cancellable = withExtendedLifetime(cancellable, { nil }) }
 
-        return try await withCheckedThrowingContinuation { continuation in
-            var finished = false
-            cancellable = first().sink(
-                receiveCompletion: { completion in
-                    switch completion {
-                    case .finished:
-                        guard !finished else { return }
-                        #if canImport(Alamofire)
-                        continuation.resume(throwing: AFError.explicitlyCancelled)
-                        #else
-                        continuation.resume(throwing: ExplicitlyCancelledError())
-                        #endif
-
-                    case .failure(let error):
-                        continuation.resume(throwing: error)
-                    }
-                },
-                receiveValue: { value in
-                    finished = true
-                    continuation.resume(returning: value)
-                }
-            )
+        do {
+            for try await value in values {
+                return value
+            }
+        } catch let error {
+            throw error
         }
+        throw ExplicitlyCancelledError()
+    }
+
+    /// Transforms a **failable** single-element publisher into a **throwing** async function.
+    ///
+    /// - warning: In case the publisher finishes without publishing any values, this function will trap.
+    ///
+    /// Usage:
+    /// ```swift
+    /// let myPublisher = Just(1)
+    ///     .setFailureType(to: Error.self)
+    ///     .eraseToAnyPublisher()
+    ///
+    /// Task {
+    ///     do {
+    ///         let response = try await myPublisher.asyncThrowingAny()
+    ///         print(response)
+    ///     } catch {
+    ///         // handle error of Failure type
+    ///     }
+    /// }
+    /// ```
+    func asyncThrowingFailureUnsafe() async throws(Failure) -> Output {
+        var cancellable: AnyCancellable?
+        defer { cancellable = withExtendedLifetime(cancellable, { nil }) }
+
+        do {
+            for try await value in values {
+                return value
+            }
+        } catch let error as Failure {
+            throw error
+        } catch let error {
+            preconditionFailure("Generic contract breached by Combine - throwing undeclared error.")
+        }
+        preconditionFailure("Awaited publisher finished without sending any value.")
     }
 
 }
@@ -116,8 +190,10 @@ public extension Publisher {
 #if canImport(Alamofire)
 import Alamofire
 
+@available(iOS 15.0, *)
 public extension Publisher where Output == Alamofire.Empty {
 
+    @available(*, deprecated, message: "Generic contract is not enforced anymore.")
     func async() async throws {
         let _: Output = try await self.async()
     }
@@ -127,7 +203,7 @@ public extension Publisher where Output == Alamofire.Empty {
 
 // MARK: - Async -> Publisher
 
-@available(*, deprecated, message: "This is unsafe in Swift 6, migrate to Swift Concurrency")
+@available(*, deprecated, message: "This is unsafe, migrate to Swift Concurrency")
 public extension Future where Failure == Never {
 
     /// Transforms a **non throwing** async function into a **never failing** Future.
@@ -151,10 +227,10 @@ public extension Future where Failure == Never {
 
 }
 
-@available(*, deprecated, message: "This is unsafe in Swift 6, migrate to Swift Concurrency")
+@available(*, deprecated, message: "This is unsafe, migrate to Swift Concurrency")
 public extension Future {
 
-    /// Transforms a **throwing** async function into a **failing** Future.
+    /// Transforms a **throwing** async function into a **failable** Future.
     /// ```
     /// func myThrowingAsyncFunction() async throws -> Int {
     ///    await Task.sleep(1_000_000_000)
