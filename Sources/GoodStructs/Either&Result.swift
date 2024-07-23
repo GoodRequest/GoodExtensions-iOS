@@ -8,8 +8,9 @@
 
 import Foundation
 
-// MARK: Either represents a value of one of two possible types (a disjoint union).
+// MARK: - Either
 
+/// Either represents a value of one of two possible types (a disjoint union).
 /// Instances of Either are either an instance of Left or Right.
 /// A common use of Either is as an alternative to Option for dealing with possible missing values,
 /// or option to return multiple types from functions.
@@ -88,80 +89,82 @@ public enum Either<L, R> {
         )
     }
 
-    public func toResult() -> GRResult<R, L> {
+    public func toResult() -> GRResult<L, R> where R: Error {
         switch self {
-        case let .left(error):
-            return GRResult.failure(error)
-
-        case let .right(value):
+        case let .left(value):
             return GRResult.success(value)
+
+        case let .right(error):
+            return GRResult.failure(error)
         }
     }
 
-    public func unwrap() throws -> R {
-        switch self {
-        case .right(let value):
-            return value
-
-        default:
-            throw EitherResultError.unwrap
-        }
-    }
-
-    public func unwrapLeft() throws -> L {
+    public func unwrap() throws(UnwrapError) -> L {
         switch self {
         case .left(let value):
             return value
 
         default:
-            throw EitherResultError.unwrap
+            throw .unwrap
+        }
+    }
+
+    public func unwrapRight() throws(UnwrapError) -> R {
+        switch self {
+        case .right(let value):
+            return value
+
+        default:
+            throw .unwrap
         }
     }
 
 }
 
+// MARK: - Result
+
 /// Result represents state of task. Loading is mostly used at beginning of task.
 /// Success type represents result value when task is finished succesfully.
 /// Failure is used for catching errors from tasks. Used for preventing of TRY CATCH usage.
-public enum GRResult<V, E> {
+@frozen public enum GRResult<Success, Failure> where Failure: Error {
 
     case loading
-    case success(V)
-    case failure(E)
+    case success(Success)
+    case failure(Failure)
 
-    public func map<V2>(_ transform: (V) -> V2) -> GRResult<V2, E> {
+    public func map<V2>(_ transform: (Success) -> V2) -> GRResult<V2, Failure> {
         switch self {
         case .loading:
-            return GRResult<V2, E>.loading
+            return GRResult<V2, Failure>.loading
 
         case let .failure(value):
-            return GRResult<V2, E>.failure(value)
+            return GRResult<V2, Failure>.failure(value)
 
         case let .success(value):
-            return GRResult<V2, E>.success(transform(value))
+            return GRResult<V2, Failure>.success(transform(value))
         }
     }
 
-    public func mapError<E2>(_ transform: (E) -> E2) -> GRResult<V, E2> {
+    public func mapError<E2>(_ transform: (Failure) -> E2) -> GRResult<Success, E2> {
         switch self {
         case .loading:
-            return GRResult<V, E2>.loading
+            return GRResult<Success, E2>.loading
 
         case let .failure(value):
-            return GRResult<V, E2>.failure(transform(value))
+            return GRResult<Success, E2>.failure(transform(value))
 
         case let .success(value):
-            return GRResult<V, E2>.success(value)
+            return GRResult<Success, E2>.success(value)
         }
     }
 
-    public func flatMap<V2>(_ transform: (V) -> GRResult<V2, E>) -> GRResult<V2, E> {
+    public func flatMap<V2>(_ transform: (Success) -> GRResult<V2, Failure>) -> GRResult<V2, Failure> {
         switch self {
         case .loading:
-            return GRResult<V2, E>.loading
+            return GRResult<V2, Failure>.loading
 
         case let .failure(value):
-            return GRResult<V2, E>.failure(value)
+            return GRResult<V2, Failure>.failure(value)
 
         case let .success(value):
             return transform(value)
@@ -198,28 +201,28 @@ public enum GRResult<V, E> {
         }
     }
 
-    public func unwrapSuccess() throws -> V {
+    public func unwrapSuccess() throws(UnwrapError) -> Success {
         switch self {
         case .success(let value):
             return value
 
         default:
-            throw EitherResultError.unwrap
+            throw .unwrap
         }
     }
 
-    public func unwrapFailure() throws -> E {
+    public func unwrapFailure() throws(UnwrapError) -> Failure {
         switch self {
         case .failure(let value):
             return value
 
         default:
-            throw EitherResultError.unwrap
+            throw .unwrap
         }
     }
 }
 
-enum EitherResultError: Error {
+public enum UnwrapError: Error {
 
     case unwrap
 
@@ -242,9 +245,9 @@ extension Either: Equatable where L: Equatable, R: Equatable {
 }
 
 /// Functions for comparing Result container
-extension GRResult: Equatable where E: Equatable, V: Equatable {
+extension GRResult: Equatable where Failure: Equatable, Success: Equatable {
 
-    public static func ==<E: Equatable, V: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
+    public static func ==(left: GRResult<Success, Failure>, right: GRResult<Success, Failure>) -> Bool {
         if case let .success(leftValue) = left, case let  .success(rightValue) = right {
             return leftValue == rightValue
         }
@@ -258,6 +261,23 @@ extension GRResult: Equatable where E: Equatable, V: Equatable {
         }
 
         return false
+    }
+
+}
+
+extension GRResult: Sendable where Success: Sendable {}
+
+// Converting Swift.Result to GoodStructs.GRResult
+public extension Swift.Result {
+
+    func toGRResult() -> GRResult<Success, Failure> {
+        switch self {
+        case .success(let success):
+            GRResult.success(success)
+
+        case .failure(let error):
+            GRResult.failure(error)
+        }
     }
 
 }

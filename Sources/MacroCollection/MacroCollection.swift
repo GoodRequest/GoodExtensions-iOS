@@ -7,12 +7,15 @@
 
 import Foundation
 import SwiftCompilerPlugin
-import SwiftSyntaxMacros
+@_spi(ExperimentalLanguageFeature) import SwiftSyntaxMacros
 
 @main struct Plugins: CompilerPlugin {
 
     let providingMacros: [Macro.Type] = [
-        URLMacro.self
+        URLMacro.self,
+        LogMacro.self,
+        LoggedMacro.self,
+        LogAccessMacro.self
     ]
 
 }
