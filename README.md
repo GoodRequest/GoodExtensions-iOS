@@ -1,8 +1,7 @@
 # GoodExtensions-iOS
 
-[![iOS Version](https://img.shields.io/badge/iOS_Version->=_12.0-brightgreen?logo=apple&logoColor=green)]()
-[![Swift Version](https://img.shields.io/badge/Swift_Version-5.5-green?logo=swift)](https://docs.swift.org/swift-book/)
-[![Supported devices](https://img.shields.io/badge/Supported_Devices-iPhone/iPad-green)]()
+[![iOS Version](https://img.shields.io/badge/iOS_Version->=_13.0-brightgreen?logo=apple&logoColor=green)]()
+[![Swift Version](https://img.shields.io/badge/Swift_Version-6.0-green?logo=swift)](https://docs.swift.org/swift-book/)
 [![Contains Test](https://img.shields.io/badge/Tests-YES-blue)]()
 [![Dependency Manager](https://img.shields.io/badge/Dependency_Manager-SPM-red)](#swiftpackagemanager)
 
@@ -25,43 +24,10 @@ import PackageDescription
 let package = Package(
     name: "SampleProject",
     dependencies: [
-        .Package(url: "https://github.com/GoodRequest/GoodExtensions-iOS" from: "addVersion")
+        .package(url: "https://github.com/GoodRequest/GoodExtensions-iOS", .upToNextMajor("2.0.0")
     ]
 )
 
-```
-
-## Usage
-
-### Then
-Then is a useful way to set properties with closures just after initializing.
-
-```swift
-let myLabel = UILabel().then {
-    $0.textAlignment = .center
-    $0.textColor = .black
-    $0.text = "Hello, World!"
-}
-```
-
-### UIKit Combine
-You can define Publisher for your button or other user interactive elements
-
-```swift
-
-private(set) lazy var buttonPublisher = myButton.gr.publisher(for: .touchUpInside)
-
-```
-then subcribe to it and handle the actions whenever user interacts with the element
-
-```swift
-
-buttonPublisher
-    .sink { [weak self] _ in
-        // do actions
-    }
-    .store(in: &cancellables)
-    
 ```
 
 ## License
