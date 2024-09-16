@@ -1,4 +1,4 @@
-// swift-tools-version:5.9
+// swift-tools-version:6.0
 // The swift-tools-version declares the minimum version of Swift required to build this package.
 
 import PackageDescription
@@ -30,29 +30,37 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.2")
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-latest")
     ],
     targets: [
         .target(
             name: "GoodExtensions",
             dependencies: ["GoodStructs"],
-            path: "./Sources/GoodExtensions"
+            path: "./Sources/GoodExtensions",
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
              name: "GoodAsyncExtensions",
              dependencies: [
                  .product(name: "CombineExt", package: "CombineExt")
-             ]
+             ],
+             swiftSettings: [.swiftLanguageMode(.v6)]
          ),
         .target(
             name: "GoodStructs",
             dependencies: [],
-            path: "./Sources/GoodStructs"
+            path: "./Sources/GoodStructs",
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .target(
             name: "GoodMacros",
             dependencies: ["MacroCollection"],
-            path: "./Sources/GoodMacros"
+            path: "./Sources/GoodMacros",
+            swiftSettings: [
+                .swiftLanguageMode(.v6),
+                .enableUpcomingFeature("BodyMacros"),
+                .enableExperimentalFeature("BodyMacros")
+            ]
         ),
         .macro(
             name: "MacroCollection",
@@ -69,15 +77,30 @@ let package = Package(
             [
                 .copy("Resources/EmptyElement.json"),
                 .copy("Resources/ArrayNil.json")
-            ]
+            ],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "GoodStructsTests",
-            dependencies: ["GoodStructs"]
+            dependencies: ["GoodStructs"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
         ),
         .testTarget(
             name: "GoodAsyncExtensionsTests",
-            dependencies: ["GoodAsyncExtensions"]
+            dependencies: ["GoodAsyncExtensions"],
+            swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        .testTarget(
+            name: "GoodMacrosTests",
+            dependencies: [
+                "GoodMacros",
+                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+            ],
+            swiftSettings: [
+                .swiftLanguageMode(.v6),
+                .enableUpcomingFeature("BodyMacros"),
+                .enableExperimentalFeature("BodyMacros")
+            ]
         )
     ]
 )

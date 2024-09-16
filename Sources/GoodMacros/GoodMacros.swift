@@ -9,3 +9,12 @@ import Foundation
 
 @freestanding(expression)
 public macro URL(_ string: String) -> URL = #externalMacro(module: "MacroCollection", type: "URLMacro")
+
+@attached(body)
+public macro Log() = #externalMacro(module: "MacroCollection", type: "LogMacro")
+
+@attached(memberAttribute)
+public macro Logged() = #externalMacro(module: "MacroCollection", type: "LoggedMacro")
+
+@attached(accessor, names: named(willSet))
+public macro LogAccess() = #externalMacro(module: "MacroCollection", type: "LogAccessMacro")

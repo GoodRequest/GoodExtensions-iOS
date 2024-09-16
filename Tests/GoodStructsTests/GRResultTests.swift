@@ -71,5 +71,18 @@ final class GRResultTests: XCTestCase {
         let error = try? grFailureResult.mapError { _ in TestError.unknown }.unwrapFailure()
         XCTAssert(error == .unknown)
     }
-    
+
+    func testResultEquatable() {
+        let resultA = GRResult<String, Never>.success("A")
+        let resultB = GRResult<String, Never>.success("B")
+
+        // Self == Self
+        XCTAssertEqual(resultA, resultA)
+        XCTAssertEqual(resultB, resultB)
+
+        // A != B
+        XCTAssertNotEqual(resultA, resultB)
+        XCTAssertNotEqual(resultB, resultA)
+    }
+
 }

@@ -10,9 +10,7 @@
 		5D740E8029B0BACE00975B8C /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5D740E7F29B0BACE00975B8C /* AppDelegate.swift */; };
 		5D740E8B29B0BACF00975B8C /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5D740E8A29B0BACF00975B8C /* Assets.xcassets */; };
 		5D740E8E29B0BACF00975B8C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5D740E8C29B0BACF00975B8C /* LaunchScreen.storyboard */; };
-		5D740E9B29B0BB4900975B8C /* GoodCombineExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5D740E9A29B0BB4900975B8C /* GoodCombineExtensions */; };
 		5D740E9D29B0BB4900975B8C /* GoodExtensions in Frameworks */ = {isa = PBXBuildFile; productRef = 5D740E9C29B0BB4900975B8C /* GoodExtensions */; };
-		5D740E9F29B0BB4900975B8C /* GoodStructs in Frameworks */ = {isa = PBXBuildFile; productRef = 5D740E9E29B0BB4900975B8C /* GoodStructs */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,9 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5D740E9B29B0BB4900975B8C /* GoodCombineExtensions in Frameworks */,
 				5D740E9D29B0BB4900975B8C /* GoodExtensions in Frameworks */,
-				5D740E9F29B0BB4900975B8C /* GoodStructs in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -99,9 +95,7 @@
 			);
 			name = "GoodExtensions-iOS";
 			packageProductDependencies = (
-				5D740E9A29B0BB4900975B8C /* GoodCombineExtensions */,
 				5D740E9C29B0BB4900975B8C /* GoodExtensions */,
-				5D740E9E29B0BB4900975B8C /* GoodStructs */,
 			);
 			productName = "GoodExtensions-iOS";
 			productReference = 5D740E7C29B0BACE00975B8C /* GoodExtensions-iOS.app */;
@@ -312,7 +306,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.goodrequest.GoodExtensions-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -340,7 +334,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "com.goodrequest.GoodExtensions-iOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 6.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -369,17 +363,9 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		5D740E9A29B0BB4900975B8C /* GoodCombineExtensions */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GoodCombineExtensions;
-		};
 		5D740E9C29B0BB4900975B8C /* GoodExtensions */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GoodExtensions;
-		};
-		5D740E9E29B0BB4900975B8C /* GoodStructs */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = GoodStructs;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
