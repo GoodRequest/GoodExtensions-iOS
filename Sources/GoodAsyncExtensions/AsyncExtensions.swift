@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 
+#if swift(>=6)
 // MARK: - Errors
 
 public struct ExplicitlyCancelledError: Error {
@@ -215,7 +216,7 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
     let semaphore = DispatchSemaphore(value: 0)
     var result: T?
     var failure: (any Error)?
-    Task {
+    Task.detached {
         defer { semaphore.signal() }
         do {
             result = try await asyncFunction()
@@ -238,7 +239,7 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
 public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping () async -> T) -> T {
     let semaphore = DispatchSemaphore(value: 0)
     var result: T?
-    Task {
+    Task.detached {
         defer { semaphore.signal() }
         result = await asyncFunction()
     }
@@ -247,63 +248,5 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
     guard let result else { preconditionFailure("Async function did not return") }
     return result
 }
-
-// MARK: - Future extensions - Swift 5 only
-
-#if swift(<6)
-public func GENERIC_CONTRACT_VIOLATION() -> Never {
-    preconditionFailure("Generic contract violated: throwable type does not match Failure type")
-}
-
-public extension Future where Failure == Never {
-
-    /// Transforms a **non throwing** async function into a **never failing** Future.
-    /// ```
-    /// func myAsyncFunction() async -> Int {
-    ///    await Task.sleep(1_000_000_000)
-    ///    return 1
-    /// }
-    /// let future = Future {
-    ///     await myAsyncFunction()
-    /// }
-    /// ```
-    /// - Parameters:
-    ///     - asyncFunction: **non throwing** Async function to run
-    convenience init(_ asyncFunction: @escaping () async -> Output) {
-        self.init { (promise: @escaping (Result<Output, Never>) -> Void) in
-            Task { promise(.success(await asyncFunction())) }
-        }
-    }
-
-}
-
-public extension Future {
-
-    /// Transforms a **throwing** async function into a **failing** Future.
-    /// ```
-    /// func myThrowingAsyncFunction() async throws -> Int {
-    ///    await Task.sleep(1_000_000_000)
-    ///    return 1
-    /// }
-    /// let future = Future {
-    ///     await myThrowingAsyncFunction()
-    /// }
-    /// ```
-    /// - Parameters:
-    ///     - asyncFunction: **throwing** Async function to run
-    convenience init(_ asyncFunction: @escaping () async throws -> Output) {
-        self.init { (promise: @escaping (Result<Output, Failure>) -> Void) in
-            Task {
-                do {
-                    promise(.success(try await asyncFunction()))
-                } catch let error as Failure {
-                    promise(.failure(error))
-                } catch {
-                    GENERIC_CONTRACT_VIOLATION()
-                }
-            }
-        }
-    }
-
-}
 #endif
+
