@@ -8,6 +8,7 @@
 import Combine
 import Foundation
 
+#if swift(>=6)
 // MARK: - Errors
 
 public struct ExplicitlyCancelledError: Error {
@@ -210,11 +211,12 @@ public extension Publisher where Output == Alamofire.Empty {
 /// - Parameter asyncFunction: asynchronous function to call
 /// - Throws: error thrown from async function
 /// - Returns: return value of async function
+@available(*, deprecated, message: "Heads up: this is unsafe!")
 public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping () async throws -> T) throws -> T {
     let semaphore = DispatchSemaphore(value: 0)
     var result: T?
     var failure: (any Error)?
-    Task {
+    Task.detached {
         defer { semaphore.signal() }
         do {
             result = try await asyncFunction()
@@ -233,10 +235,11 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
 /// - warning: This is unsafe, as the function uses a traditional, blocking, dispatch semaphore to wait for the result.
 /// - Parameter asyncFunction: asynchronous function to call
 /// - Returns: return value of async function
+@available(*, deprecated, message: "Heads up: this is unsafe!")
 public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping () async -> T) -> T {
     let semaphore = DispatchSemaphore(value: 0)
     var result: T?
-    Task {
+    Task.detached {
         defer { semaphore.signal() }
         result = await asyncFunction()
     }
@@ -245,3 +248,5 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
     guard let result else { preconditionFailure("Async function did not return") }
     return result
 }
+#endif
+

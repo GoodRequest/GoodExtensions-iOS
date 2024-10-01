@@ -30,7 +30,7 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-syntax.git", from: "600.0.0-latest")
+        .package(url: "https://github.com/apple/swift-syntax.git", .upToNextMajor(from: "600.0.0"))
     ],
     targets: [
         .target(
@@ -46,6 +46,13 @@ let package = Package(
              ],
              swiftSettings: [.swiftLanguageMode(.v6)]
          ),
+        .target(
+            name: "GoodAsyncExtensionsSwift5",
+            dependencies: [
+                .product(name: "CombineExt", package: "CombineExt")
+            ],
+            swiftSettings: [.swiftLanguageMode(.v5)]
+        ),
         .target(
             name: "GoodStructs",
             dependencies: [],
@@ -89,6 +96,11 @@ let package = Package(
             name: "GoodAsyncExtensionsTests",
             dependencies: ["GoodAsyncExtensions"],
             swiftSettings: [.swiftLanguageMode(.v6)]
+        ),
+        .testTarget(
+            name: "GoodAsyncExtensionsTestsSwift5",
+            dependencies: ["GoodAsyncExtensionsSwift5"],
+            swiftSettings: [.swiftLanguageMode(.v5)]
         ),
         .testTarget(
             name: "GoodMacrosTests",
