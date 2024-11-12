@@ -32,7 +32,7 @@ public typealias NonSendableBiConsumer<T, U> = (T, U) -> ()
 public typealias NonSendablePredicate<T> = (T) -> Bool
 public typealias NonSendableFunction<T, U> = (T) -> (U)
 
-// MARK: Regular + throwing
+// MARK: Throwing
 
 public typealias ThrowingVoidClosure<E> = @Sendable () throws(E) -> ()
 public typealias ThrowingSupplier<T, E> = @Sendable () throws(E) -> (T)
@@ -41,20 +41,20 @@ public typealias ThrowingBiConsumer<T, U, E> = @Sendable (T, U) throws(E) -> ()
 public typealias ThrowingPredicate<T, E> = @Sendable (T) throws(E) -> Bool
 public typealias ThrowingFunction<T, U, E> = @Sendable (T) throws(E) -> (U)
 
-// MARK: Regular + MainActor
+// MARK: MainActor
 
-public typealias MainClosure = @MainActor @Sendable () -> ()
-public typealias MainSupplier<T> = @MainActor @Sendable () -> (T)
-public typealias MainConsumer<T> = @MainActor @Sendable (T) -> ()
-public typealias MainBiConsumer<T, U> = @MainActor @Sendable (T, U) -> ()
-public typealias MainPredicate<T> = @MainActor @Sendable (T) -> Bool
-public typealias MainFunction<T, U> = @MainActor @Sendable (T) -> (U)
+public typealias MainClosure = @MainActor () -> ()
+public typealias MainSupplier<T> = @MainActor () -> (T)
+public typealias MainConsumer<T> = @MainActor (T) -> ()
+public typealias MainBiConsumer<T, U> = @MainActor (T, U) -> ()
+public typealias MainPredicate<T> = @MainActor (T) -> Bool
+public typealias MainFunction<T, U> = @MainActor (T) -> (U)
 
-// MARK: Regular + MainActor + throwing
+// MARK: MainActor + Throwing
 
-public typealias MainThrowingVoidClosure<E> = @MainActor @Sendable () throws(E) -> ()
-public typealias MainThrowingSupplier<T, E> = @MainActor @Sendable () throws(E) -> (T)
-public typealias MainThrowingConsumer<T, E> = @MainActor @Sendable (T) throws(E) -> ()
-public typealias MainThrowingBiConsumer<T, U, E> = @MainActor @Sendable (T, U) throws(E) -> ()
-public typealias MainThrowingPredicate<T, E> = @MainActor @Sendable (T) throws(E) -> Bool
-public typealias MainThrowingFunction<T, U, E> = @MainActor @Sendable (T) throws(E) -> (U)
+public typealias MainThrowingVoidClosure<E> = @MainActor () throws(E) -> ()
+public typealias MainThrowingSupplier<T, E> = @MainActor () throws(E) -> (T)
+public typealias MainThrowingConsumer<T, E> = @MainActor (T) throws(E) -> ()
+public typealias MainThrowingBiConsumer<T, U, E> = @MainActor (T, U) throws(E) -> ()
+public typealias MainThrowingPredicate<T, E> = @MainActor (T) throws(E) -> Bool
+public typealias MainThrowingFunction<T, U, E> = @MainActor (T) throws(E) -> (U)
