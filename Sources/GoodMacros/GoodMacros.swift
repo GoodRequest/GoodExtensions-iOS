@@ -16,5 +16,5 @@ public macro Log() = #externalMacro(module: "MacroCollection", type: "LogMacro")
 @attached(memberAttribute)
 public macro Logged() = #externalMacro(module: "MacroCollection", type: "LoggedMacro")
 
-@attached(accessor, names: named(willSet))
-public macro LogAccess() = #externalMacro(module: "MacroCollection", type: "LogAccessMacro")
+//@attached(accessor, names: named(willSet))
+//public macro LogAccess() = #externalMacro(module: "MacroCollection", type: "LogAccessMacro")

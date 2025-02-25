@@ -14,8 +14,8 @@ import SwiftCompilerPlugin
     let providingMacros: [Macro.Type] = [
         URLMacro.self,
         LogMacro.self,
-        LoggedMacro.self,
-        LogAccessMacro.self
+        LoggedMacro.self//,
+//        LogAccessMacro.self
     ]
 
 }

@@ -1,5 +1,5 @@
 {
-  "originHash" : "e17729e7800e9cc8b369f0360a17e9928cf398318883e4a5affb6c32f121eeeb",
+  "originHash" : "bfb0aa75fa0d09e3c60125172fb88cab5934545e6c08533bd667104a5f0f0735",
   "pins" : [
     {
       "identity" : "combineext",
@@ -11,11 +11,11 @@
       }
     },
     {
-      "identity" : "swift-syntax",
+      "identity" : "swift-syntax-xcframeworks",
       "kind" : "remoteSourceControl",
-      "location" : "https://github.com/apple/swift-syntax.git",
+      "location" : "https://github.com/sjavora/swift-syntax-xcframeworks.git",
       "state" : {
-        "revision" : "0687f71944021d616d34d922343dcef086855920",
+        "revision" : "9ee39cc55ade054ed2ec0c6a082476e6d4f074bd",
         "version" : "600.0.1"
       }
     }

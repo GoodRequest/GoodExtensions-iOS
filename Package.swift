@@ -30,7 +30,8 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/CombineCommunity/CombineExt.git", from: "1.0.0"),
-        .package(url: "https://github.com/apple/swift-syntax.git", .upToNextMajor(from: "600.0.0"))
+//        .package(url: "https://github.com/apple/swift-syntax.git", .upToNextMajor(from: "600.0.0"))
+        .package(url: "https://github.com/sjavora/swift-syntax-xcframeworks.git", from: "600.0.1")
     ],
     targets: [
         .target(
@@ -72,8 +73,7 @@ let package = Package(
         .macro(
             name: "MacroCollection",
             dependencies: [
-                .product(name: "SwiftSyntaxMacros", package: "swift-syntax"),
-                .product(name: "SwiftCompilerPlugin", package: "swift-syntax")
+                .product(name: "SwiftSyntaxWrapper", package: "swift-syntax-xcframeworks")
             ],
             path: "./Sources/MacroCollection"
         ),
@@ -106,7 +106,7 @@ let package = Package(
             name: "GoodMacrosTests",
             dependencies: [
                 "GoodMacros",
-                .product(name: "SwiftSyntaxMacrosTestSupport", package: "swift-syntax"),
+                .product(name: "SwiftSyntaxWrapper", package: "swift-syntax-xcframeworks")
             ],
             swiftSettings: [
                 .swiftLanguageMode(.v6),
