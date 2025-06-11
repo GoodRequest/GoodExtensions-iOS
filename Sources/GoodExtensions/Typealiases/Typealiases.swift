@@ -34,12 +34,12 @@ public typealias NonSendableFunction<T, U> = (T) -> (U)
 
 // MARK: Throwing
 
-public typealias ThrowingVoidClosure<E> = @Sendable () throws(E) -> ()
-public typealias ThrowingSupplier<T, E> = @Sendable () throws(E) -> (T)
-public typealias ThrowingConsumer<T, E> = @Sendable (T) throws(E) -> ()
-public typealias ThrowingBiConsumer<T, U, E> = @Sendable (T, U) throws(E) -> ()
-public typealias ThrowingPredicate<T, E> = @Sendable (T) throws(E) -> Bool
-public typealias ThrowingFunction<T, U, E> = @Sendable (T) throws(E) -> (U)
+public typealias ThrowingVoidClosure<E: Error> = @Sendable () throws(E) -> ()
+public typealias ThrowingSupplier<T, E: Error> = @Sendable () throws(E) -> (T)
+public typealias ThrowingConsumer<T, E: Error> = @Sendable (T) throws(E) -> ()
+public typealias ThrowingBiConsumer<T, U, E: Error> = @Sendable (T, U) throws(E) -> ()
+public typealias ThrowingPredicate<T, E: Error> = @Sendable (T) throws(E) -> Bool
+public typealias ThrowingFunction<T, U, E: Error> = @Sendable (T) throws(E) -> (U)
 
 // MARK: MainActor
 
@@ -52,9 +52,9 @@ public typealias MainFunction<T, U> = @MainActor (T) -> (U)
 
 // MARK: MainActor + Throwing
 
-public typealias MainThrowingVoidClosure<E> = @MainActor () throws(E) -> ()
-public typealias MainThrowingSupplier<T, E> = @MainActor () throws(E) -> (T)
-public typealias MainThrowingConsumer<T, E> = @MainActor (T) throws(E) -> ()
-public typealias MainThrowingBiConsumer<T, U, E> = @MainActor (T, U) throws(E) -> ()
-public typealias MainThrowingPredicate<T, E> = @MainActor (T) throws(E) -> Bool
-public typealias MainThrowingFunction<T, U, E> = @MainActor (T) throws(E) -> (U)
+public typealias MainThrowingVoidClosure<E: Error> = @MainActor () throws(E) -> ()
+public typealias MainThrowingSupplier<T, E: Error> = @MainActor () throws(E) -> (T)
+public typealias MainThrowingConsumer<T, E: Error> = @MainActor (T) throws(E) -> ()
+public typealias MainThrowingBiConsumer<T, U, E: Error> = @MainActor (T, U) throws(E) -> ()
+public typealias MainThrowingPredicate<T, E: Error> = @MainActor (T) throws(E) -> Bool
+public typealias MainThrowingFunction<T, U, E: Error> = @MainActor (T) throws(E) -> (U)
