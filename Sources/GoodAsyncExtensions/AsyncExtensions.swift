@@ -214,20 +214,25 @@ public extension Publisher where Output == Alamofire.Empty {
 @available(*, deprecated, message: "Heads up: this is unsafe!")
 public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping () async throws -> T) throws -> T {
     let semaphore = DispatchSemaphore(value: 0)
-    var result: T?
-    var failure: (any Error)?
+    var result: Result<T, Error>?
     Task.detached {
         defer { semaphore.signal() }
         do {
-            result = try await asyncFunction()
+            result = .success(try await asyncFunction())
         } catch let error {
-            failure = error
+            result = .failure(error)
         }
     }
     semaphore.wait()
-
-    guard let result else { throw failure ?? preconditionFailure("Async function did not return") }
-    return result
+    
+    switch result {
+    case .success(let value):
+        return value
+    case .failure(let failure):
+        throw failure
+    case nil:
+        preconditionFailure("Async function did not return")
+    }
 }
 
 /// Calls an asynchronous function synchronously, waiting for the result and blocking the caller.
