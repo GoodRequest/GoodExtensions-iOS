@@ -82,13 +82,6 @@ public enum Either<L, R> {
         )
     }
 
-    public func mapToNothing() -> Either<L, Nothing> {
-        return either(
-            ifLeft: { return Either<L, Nothing>.left($0) },
-            ifRight: { _ in return Either<L, Nothing>.right(Nothing()) }
-        )
-    }
-
     public func toResult() -> GRResult<L, R> where R: Error {
         switch self {
         case let .left(value):
@@ -280,44 +273,4 @@ public extension Swift.Result {
         }
     }
 
-}
-
-public func ==<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
-    if case .success(_) = left, case .success(_) = right {
-        return true
-    }
-    if case .failure = left, case .failure = right {
-        return true
-    }
-    if case .loading = left, case .loading = right {
-        return false
-    }
-    return false
-}
-
-public func !=<V: Equatable, E: Equatable>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
-    return !(left == right)
-}
-
-public func !=<E, V>(left: GRResult<V, E>, right: GRResult<V, E>) -> Bool {
-    if case .loading = left, case .loading = right {
-        return false
-    }
-    return !(left == right)
-}
-
-public func zip<E, R1, R2>(_ leftResult: GRResult<R1, E>, _ rightResult: GRResult<R2, E>) -> GRResult<(R1, R2), E> {
-    if case .failure(let e) = leftResult {
-        return .failure(e)
-    }
-
-    if case .failure(let e) = rightResult {
-        return .failure(e)
-    }
-
-    if case .success(let valueLeft) = leftResult, case .success(let valueRight) = rightResult {
-        return .success((valueLeft, valueRight))
-    }
-
-    return .loading
 }

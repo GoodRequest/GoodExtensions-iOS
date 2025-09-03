@@ -7,36 +7,6 @@
 
 import Foundation
 
-@available(*, deprecated, message: "This extension is deprecated and marked for removal")
-extension Collection where Self: GRCompatible { }
-
-@available(*, deprecated, message: "This extension is deprecated and marked for removal")
-public extension GRActive where Base: Collection {
-
-    /// Returns array of elements where between each element will be inserted element, provided in parameter.
-    /// - Parameter element: The element to insert
-    /// - Returns: Returns array of elements separated by given element
-    func separated(by element: Base.Element) -> [Base.Element] {
-        return Array(base.map { [$0] }.joined(separator: [element]))
-    }
-
-    /// Checks if array constains item with given index.
-    /// - Parameter index: The index of element in array
-    /// - Returns: Boolean result whether array containts item with specified index or not.
-    func contains(index: Int) -> Bool {
-        // swiftlint:disable force_cast
-        return (base.startIndex..<base.endIndex).contains(index as! Base.Index)
-        // swiftlint:enable force_cast
-    }
-
-    /// True if array contains elements, otherwise false
-    var hasItems: Bool { !base.isEmpty }
-
-}
-
-@available(*, deprecated, message: "This extension is deprecated and marked for removal")
-extension Array: GRCompatible {}
-
 public extension Array {
 
     /// Creates an array containing this array.
@@ -86,6 +56,23 @@ public extension Array {
     func appending(_ otherArray: Array<Element>?) -> Self {
         return self + (otherArray ?? [])
     }
+    
+    /// Returns array of elements where between each element will be inserted element, provided in parameter.
+    /// - Parameter element: The element to insert
+    /// - Returns: Returns array of elements separated by given element
+    func separated(by element: Element) -> [Element] {
+        return Array(self.map { [$0] }.joined(separator: [element]))
+    }
+
+    /// Checks if array constains item with given index.
+    /// - Parameter index: The index of element in array
+    /// - Returns: Boolean result whether array containts item with specified index or not.
+    func contains(index: Index) -> Bool {
+        return (self.startIndex..<self.endIndex).contains(index)
+    }
+
+    /// True if array contains elements, false otherwise
+    var hasItems: Bool { !isEmpty }
 
     /// Generates an array by invoking an element supplier `count`-times.
     ///

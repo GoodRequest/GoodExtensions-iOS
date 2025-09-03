@@ -8,21 +8,6 @@
 
 import Foundation
 
-@available(*, deprecated, message: "This extension is deprecated and marked for removal")
-extension Data: GRCompatible {}
-
-@available(*, deprecated, message: "This extension is deprecated and marked for removal")
-public extension GRActive where Base == Data {
-
-    /// String formatted as hex "%02.2hhx"
-    var hexString: String {
-        return base.map { data -> String in
-            return String(format: "%02.2hhx", data)
-        }.joined()
-    }
-
-}
-
 public extension Data {
     
     /// Formats data as hex string. Format style: `0xA0B1C2`
