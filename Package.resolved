@@ -1,15 +1,6 @@
 {
-  "originHash" : "e17729e7800e9cc8b369f0360a17e9928cf398318883e4a5affb6c32f121eeeb",
+  "originHash" : "d831d057b27b89f2c9ad2001d779fc27376f21b06b929db341628a43c6e71f6b",
   "pins" : [
-    {
-      "identity" : "combineext",
-      "kind" : "remoteSourceControl",
-      "location" : "https://github.com/CombineCommunity/CombineExt.git",
-      "state" : {
-        "revision" : "d7b896fa9ca8b47fa7bcde6b43ef9b70bf8c1f56",
-        "version" : "1.8.1"
-      }
-    },
     {
       "identity" : "swift-syntax",
       "kind" : "remoteSourceControl",
