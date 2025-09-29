@@ -343,7 +343,7 @@ final class VersionTests: XCTestCase {
         XCTAssertLessThan(version211a3, version211)
 
         XCTAssertLessThan(version2b1a, version2b1b)
-        XCTAssertLessThan(version2b1a, version2)
+        XCTAssertGreaterThan(version2b1a, version2)
         XCTAssertGreaterThan(version2b1b, version2b1a)
         XCTAssertGreaterThan(version2b1a, version2a0)
 
