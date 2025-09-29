@@ -346,11 +346,8 @@ public enum ReleaseStage: String, Sendable {
         case .alpha:
             return 1
 
-        case .beta:
+        case .beta, .release:
             return 2
-
-        case .release:
-            return 3
         }
     }
 
