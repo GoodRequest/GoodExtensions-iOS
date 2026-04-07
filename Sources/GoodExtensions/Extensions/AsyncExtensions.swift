@@ -34,6 +34,7 @@ public func runAsync<T: Sendable>(_ functions: (@Sendable () async throws -> (T)
     })
 }
 
+#if swift(<6.3)
 // MARK: - Calling asynchronous APIs synchronously
 
 /// Calls an asynchronous function synchronously, waiting for the result and blocking the caller.
@@ -84,5 +85,6 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
     guard let result else { preconditionFailure("Async function did not return") }
     return result
 }
+#endif
 #endif
 
