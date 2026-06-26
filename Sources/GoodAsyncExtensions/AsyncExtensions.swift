@@ -236,7 +236,7 @@ public func unsafeBlockingSync<T: Sendable>(_ asyncFunction: sending @escaping (
     }
 }
 
-/// Calls an asynchronous function synchronously, waiting for the result and blocking the caller.
+/// Calls an asynchronous function synchronously, waiting for the result and blocking the caller. 
 ///
 /// - warning: This is unsafe, as the function uses a traditional, blocking, dispatch semaphore to wait for the result.
 /// - Parameter asyncFunction: asynchronous function to call
